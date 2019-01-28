@@ -4,7 +4,7 @@
   "description": "Förnya körtkortsprocessen",
   "main": "server.js",
   "scripts": {
-    "frontend": "git pull && node server.js",
+    "frontend": "git reset --hard && git pull && npm install && node server.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon server.js"
   },
