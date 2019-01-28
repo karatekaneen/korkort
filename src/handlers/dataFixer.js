@@ -6,7 +6,7 @@ exports.sanitize = (formData) => {
     let clone = JSON.parse(JSON.stringify(formData))
 
     // Get the keys of the form:
-    const keys = Object.keys(formData)
+    const keys = Object.keys(clone)
 
     for (key of keys) {
         clone[key] = xss(clone[key])
