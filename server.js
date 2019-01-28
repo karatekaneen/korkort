@@ -1,5 +1,7 @@
 const express = require('express')
+const cors = require('cors')
 let app = express()
+app.use(cors())
 const { checkAuth } = require('./src/handlers/authHandler')
 const { apply } = require('./src/handlers/applicationHandler')
 const { test } = require('./src/handlers/tester')
