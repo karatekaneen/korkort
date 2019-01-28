@@ -50,7 +50,6 @@ exports.apply = async (req, res, next) => {
             const resp = await uploadApplication(cleanData)
 
             res.send(resp)
-
     
     
         } else {

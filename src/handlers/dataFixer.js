@@ -1,5 +1,18 @@
+const xss = require("xss");
+
 exports.sanitize = (formData) => {
-    console.log('Do not forget to fix sanitizer')
+
+    // clone the object:
+    let clone = JSON.parse(JSON.stringify(formData))
+
+    // Get the keys of the form:
+    const keys = Object.keys(formData)
+
+    for (key of keys) {
+        clone[key] = xss(clone[key])
+    }
+
+
     return formData
 }
 
@@ -13,7 +26,7 @@ exports.dataIsComplete = (formData) => {
 }
 
 exports.parseImageData = (formData) => {
-    let clone = JSON.parse( JSON.stringify( formData ) )
+    let clone = JSON.parse(JSON.stringify(formData))
 
     console.log('fix the imageparser')
 
