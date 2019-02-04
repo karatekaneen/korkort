@@ -2,10 +2,12 @@ const express = require('express')
 const cors = require('cors')
 const multer = require('multer')
 const bodyParser = require('body-parser')
+const cookieParser = require('cookie-parser')
 
 let app = express()
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
+app.use(cookieParser())
 app.use(cors())
 const upload = multer({ dest: 'uploads/' })
 
