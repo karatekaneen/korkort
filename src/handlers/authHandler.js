@@ -1,14 +1,32 @@
+const SECRET = 'r0B1nA3rB4ezt'
+const jwt = require('jsonwebtoken');
+const { reject } = require('./rejector')
+
+
 exports.checkAuth = async (req, res, next) => {
    // Funktion för att kolla så att allting står rätt till med inloggning
-   // TODO Fixa så att den faktiskt gör något
-   console.log('auth success')
+   try {
+      /*
+      // Checking if the token is signed with the correct key
+      const decoded = jwt.verify(
+         req.cookies.auth,
+         SECRET
+      )
 
-   next()
+      // If the token was valid we save the user id locally:
+      res.locals.auth = decoded
+      */
+      next()
+
+   } catch (err) {
+      console.log(err)
+      const rej = reject('unauthorized')
+      res.status(rej.status).send(rej.message)
+   }
 }
 
 exports.handleLogin = async (req, res, next) => {
    const { fetchUser } = require('./dbHandler')
-   const jwt = require('jsonwebtoken');
 
    // Check if details provided
    const userId = req.body.userId
@@ -19,7 +37,7 @@ exports.handleLogin = async (req, res, next) => {
 
    if (userData) {
       // Generate token with userId
-      var token = jwt.sign({ userId }, 'r0B1nA3rB4ezt');
+      var token = jwt.sign({ userId }, SECRET);
 
       // Add cookie to save session:
       res.cookie(

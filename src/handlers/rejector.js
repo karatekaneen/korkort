@@ -6,5 +6,7 @@ exports.reject = (rejectType) => {
          return { status: 400, message: 'Ansökan är ej komplett' }
       case 'unknown':
          return { status: 500, message: 'Ett okänt fel uppstod' }
+      case 'unauthorized':
+         return { status: 401, message: 'Felaktiga uppgifter angavs' }
    }
 }
