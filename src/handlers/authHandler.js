@@ -6,6 +6,7 @@ const { reject } = require('./rejector')
 exports.checkAuth = async (req, res, next) => {
    // Funktion för att kolla så att allting står rätt till med inloggning
    try {
+      /*
       // Checking if the token is signed with the correct key
       const decoded = jwt.verify(
          req.cookies.auth,
@@ -14,6 +15,7 @@ exports.checkAuth = async (req, res, next) => {
 
       // If the token was valid we save the user id locally:
       res.locals.auth = decoded
+      */
       next()
 
    } catch (err) {
