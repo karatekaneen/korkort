@@ -3,7 +3,8 @@ const app = express();
 const { idLookUp } = require('./dataRetrieval')
 const { applyResult, acceptedLicense, rejectedLicense } = require('./acceptanceHandler')
 /* 
-Någon slags funktion som hämtar personid på personen som står i kö med sin ansökan för att veta vilken person och ansökan man ska titta på
+Någon slags funktion som hämtar personid på personen som står i kö med sin ansökan för att 
+veta vilken person och ansökan man ska titta på.
 Första steget, Hämta gammal data och ny data. 
 Presentera data till frontenden?
 Beslut-> Acceptera den nya data eller slänga den
@@ -12,16 +13,6 @@ ANNARS släng den skiten
 */
 
 exports.fetchAdmin = async (req, res, next) => {
-
-   // 
-   const acceptedData = true // Req input
-   /*const newUserData = { // Req input
-       name: 'Varg Vikernes',
-       birthDate: 197011124692,
-       image: 'aske59vmsiegnosf0232gdfaf3fafggdsxxcz',
-       signature: 'mgla015713bnvmn8fah0feaiofjea0n'
-   } */ //
-
    try {
       // Fetching old and new data to get approval
       res.send({ success: true, response: await idLookUp() });

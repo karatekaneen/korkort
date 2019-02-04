@@ -1,20 +1,25 @@
 // Hämta personID från en ansökan för att hitta gamla data från personen för jämföran
 // Skapa en lista på ansökan och ta första ID i kön?
-exports.idLookUp = () => {
+exports.idLookUp = async () => {
    console.log('Search the database for person ID')
-   /*
-   TODO:
-   - Hämta första ansökan i kö som inte är behandlad.
-   - Hämta den personens befintliga körkort
-   'SELECT * FROM ansokan WHERE status = 0 LIMIT 1'
-   */
-   const oldUserData = retrieveOldData()
-   const newUserData = retrieveNewData(oldUserData.Korkortsnummer)
-   return { oldUserData, newUserData }
+
+   // Check for next application in queue
+   const newUserData = await retrieveNewData()
+   // If we have an application
+   if (newUserData) {
+      // Fetch the old data for that person:
+      return {
+         oldUserData: await retrieveOldData(newUserData.Korkortsnummer),
+         newUserData
+      }
+   } else {
+      // If no application are in queue
+      return { oldUserData: 'No application in queueue', newUserData: 'No application in quueue' }
+   }
 }
 
 // Hämta den gamla data som finns i databasen med personID och returnera data
-retrieveOldData = () => {
+retrieveOldData = async (personId) => {
    console.log('Retrieve old userdata from the database')
 
    // Tillfällig data
@@ -28,15 +33,28 @@ retrieveOldData = () => {
 }
 
 // Hämta den nya data som finns i databasen med personID och returnera data
-retrieveNewData = (personId) => {
+retrieveNewData = async () => {
    console.log('Retrieve new userdata from the database')
-
-   //Tillfällig data
-   newUserData = { // Req input
-      name: 'Varg Vikernes',
-      birthDate: 197011124692,
-      image: 'aske59vmsiegnosf0232gdfaf3fafggdsxxcz',
-      signature: 'mgla015713bnvmn8fah0feaiofjea0n'
-   }
-   return newUserData
+   const applications = [ // TODO Fix mock data for this one
+      {
+         Korkortsnummer: 123456,
+         status: 0,
+         Bild: '',
+         Signatur: ''
+      },
+      {
+         Korkortsnummer: 234567,
+         status: 1,
+         Bild: '',
+         Signatur: ''
+      },
+      {
+         Korkortsnummer: 345678,
+         status: 0,
+         Bild: '',
+         Signatur: ''
+      }
+   ]
+   // Basically mocking: 'SELECT * FROM ansokan WHERE status = 0 LIMIT 1'
+   return firstApplication = applications.find(application => { return application.status === 0 })
 }
