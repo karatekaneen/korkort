@@ -2,9 +2,29 @@ const { sanitize, dataIsComplete, parseImageData, parseDates } = require('./data
 const { reject } = require('./rejector')
 const { conditionsFulfilled } = require('./rightsChecker')
 const { uploadApplication } = require('./dbHandler')
+const { fetchUser } = require('./dbHandler')
 
 
-exports.apply = async (req, res, next) => {
+
+exports.getApplication = async (req, res, next) => {
+   /*
+   Endpoint to show the old application data before the new application is made.
+   */
+   try {
+      // Fetch the old application data and return it:
+      const applicationData = fetchUser(res.locals.auth.userId)
+      res.send({ success: true, response: applicationData })
+   } catch (err) {
+      console.log(err)
+      const rejection = reject('unknown')
+      res.status(rejection.status).send({
+         success: false,
+         response: rejection.message
+      })
+   }
+}
+
+exports.postApplication = async (req, res, next) => {
    /*
    Main function for handle applications.
    It should reveive the form-data from the frontend and do the following:
