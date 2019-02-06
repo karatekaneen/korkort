@@ -1,6 +1,5 @@
 const express = require('express')
 const cors = require('cors')
-const multer = require('multer')
 const bodyParser = require('body-parser')
 const cookieParser = require('cookie-parser')
 
@@ -9,17 +8,17 @@ app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(cookieParser())
 app.use(cors())
-const upload = multer({ dest: 'uploads/' })
 
-const { checkAuth, handleLogin } = require('./src/handlers/authHandler')
+const { checkAuth, handleLogin } = require('./src/middleware/authHandler')
 const { postApplication, getApplication } = require('./src/handlers/applicationHandler')
 const { test, showUsers, showDiff } = require('./src/handlers/tester')
 const { fetchAdmin, postAdmin } = require('./src/handlers/adminHandler')
 const { updateUsers } = require('./src/data/fileHandler')
+const { upload } = require('./src/middleware/formParser')
 
 
 app.route('/application').get(checkAuth, getApplication) // TODO Fixa specifik användare
-app.route('/application').post(checkAuth, upload.single('fileToUpload'), postApplication)
+app.route('/application').post(upload, postApplication)
 
 app.route('/admin').get(checkAuth, fetchAdmin)
 app.route('/admin').post(checkAuth, postAdmin)

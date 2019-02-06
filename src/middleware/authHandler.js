@@ -1,6 +1,6 @@
 const SECRET = 'r0B1nA3rB4ezt'
 const jwt = require('jsonwebtoken');
-const { reject } = require('./rejector')
+const { reject } = require('../handlers/rejector')
 
 
 exports.checkAuth = async (req, res, next) => {
@@ -27,7 +27,7 @@ exports.checkAuth = async (req, res, next) => {
 }
 
 exports.handleLogin = async (req, res, next) => {
-   const { fetchUser } = require('./dbHandler')
+   const { fetchUser } = require('../handlers/dbHandler')
 
    // Check if details provided
    const userId = req.body.userId

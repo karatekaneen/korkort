@@ -1,4 +1,4 @@
-const { sanitize, dataIsComplete, parseImageData, parseDates } = require('./dataFixer')
+const { sanitize, dataIsComplete, parseImageData } = require('./dataFixer')
 const { reject } = require('./rejector')
 const { conditionsFulfilled } = require('./rightsChecker')
 const { uploadApplication } = require('./dbHandler')
@@ -71,6 +71,7 @@ exports.postApplication = async (req, res, next) => {
 
          // Check if data is complete: 
          if (!dataIsComplete(cleanData)) {
+            // TODO If the data is incomplete we should remove the images that got uploaded, if there were any. 
             const rejection = reject('insufficientData')
             res.status(rejection.status).send({
                success: false,
@@ -79,13 +80,12 @@ exports.postApplication = async (req, res, next) => {
          }
 
          // Parse the image data:
-         cleanData = parseImageData(cleanData)
+         cleanData = parseImageData(cleanData) // TODO This should be passed req.files to add the path to application object
 
          // Upload to database
          const resp = await uploadApplication(cleanData)
 
          res.send(resp)
-
 
       } else {
          const rejection = reject('notAllowed')

@@ -32,8 +32,3 @@ exports.parseImageData = (formData) => {
 
    return clone
 }
-
-exports.parseDates = (formData) => {
-   console.log('TODO - Fix the date parser')
-   return formData
-}
