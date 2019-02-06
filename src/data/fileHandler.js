@@ -1,23 +1,91 @@
-const fs = require('fs');
+const fs = require('mz/fs');
 
-exports.updatePerson = async () => {
-   console.log(__dirname)
-   let output = {}
-   await fs.readFile(`${__dirname}/Personer.json`, 'utf8', function readFileCallback(err, data) {
-      if (err) {
-         console.log(err);
-      } else {
-         obj = JSON.parse(data); //now it an object
-         this.output = data
-         console.log('inne')
-         // obj.table.push({ id: 2, square: 3 }); //add some data
-         // json = JSON.stringify(obj); //convert it back to json
-         // fs.writeFile('myjsonfile.json', json,  'utf8', callback); // write it back 
-      }
-   })
-   console.log('ute')
-   return output
+// Standardized function to fetch a file and parse it:
+const getFile = async (fileName) => {
+   try {
+      return JSON.parse(await fs.readFile(`${__dirname}/${fileName}.json`, 'utf8'))
 
+   } catch (err) {
+      console.log(err)
+   }
+}
+
+// Standardized function to update file:
+const writeFile = async (fileName, newFile) => {
+   try {
+      await fs.writeFile(`${__dirname}/${fileName}.json`, JSON.stringify(newFile, null, 3), 'utf8')
+   } catch (err) {
+      console.log(err)
+   }
+}
+
+exports.updatePerson = async (person) => {
+   try {
+      const list = await getFile('Personer')
+      const updatedList = list.map(oldPerson => {
+         if (oldPerson.Korkortsnummer === person.Korkortsnummer) {
+            oldPerson = person
+         }
+         return oldPerson
+      })
+      await writeFile('Personer', updatedList)
+      return 'Uppdatering utförd'
+
+   } catch (err) {
+      console.log(err)
+   }
 
 }
 
+exports.updateApplication = async (application) => {
+   try {
+      const list = await getFile('Ansokningar')
+      const updatedList = list.map(oldApplication => {
+         if (oldApplication.Ansokan_ID === application.Ansokan_ID) {
+            oldApplication = { ...oldApplication, ...application }
+         }
+         return oldApplication
+      })
+      await writeFile('Ansokningar', updatedList)
+      return 'Uppdatering utförd'
+
+   } catch (err) {
+      console.log(err)
+   }
+}
+
+exports.createApplication = async (application) => {
+   try {
+
+      let list = await getFile('Ansokningar')
+      list.push(application)
+      await writeFile('Ansokningar', list)
+      return 'Ansökan skapad'
+
+   } catch (err) {
+      console.log(err)
+   }
+}
+
+exports.updateUsers = async (req, res) => {
+   try {
+      const personer = await getFile('Personer')
+
+      const available = personer.map(user => {
+         return user.Korkortsnummer
+      })
+
+      const list = await getFile('Ansokningar')
+      const updatedList = list.map(oldApplication => {
+
+         oldApplication.Korkortsnummer = available[Math.floor(Math.random() * available.length)]
+         return oldApplication
+      })
+      await writeFile('Ansokningar', updatedList)
+      res.send(available)
+
+   } catch (err) {
+      console.log(err)
+   }
+
+}

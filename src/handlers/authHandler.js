@@ -5,6 +5,7 @@ const { reject } = require('./rejector')
 
 exports.checkAuth = async (req, res, next) => {
    // Funktion för att kolla så att allting står rätt till med inloggning
+   console.log(req.cookies)
    try {
 
       // Checking if the token is signed with the correct key

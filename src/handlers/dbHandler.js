@@ -2,9 +2,13 @@ const { updatePerson } = require('../data/fileHandler')
 
 exports.uploadApplication = async (formData) => {
    console.log('fix database integration')
+   const testForm = {
+      Korkortsnummer: 67621,
+      woop: 'POOOP'
+   }
    return {
       success: true,
-      response: await updatePerson()
+      response: await updatePerson(testForm)
    }
 }
 
