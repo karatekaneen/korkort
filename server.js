@@ -13,8 +13,9 @@ const upload = multer({ dest: 'uploads/' })
 
 const { checkAuth, handleLogin } = require('./src/handlers/authHandler')
 const { postApplication, getApplication } = require('./src/handlers/applicationHandler')
-const { test, showUsers } = require('./src/handlers/tester')
+const { test, showUsers, showDiff } = require('./src/handlers/tester')
 const { fetchAdmin, postAdmin } = require('./src/handlers/adminHandler')
+const { updateUsers } = require('./src/data/fileHandler')
 
 
 app.route('/application').get(checkAuth, getApplication) // TODO Fixa specifik användare
@@ -30,6 +31,8 @@ app.route('/login').post(handleLogin)
 // Test routes: 
 app.route('/test').get(test)
 app.route('/users').get(showUsers) // Testing endpoint to see the registered users
+app.route('/updateusers').get(updateUsers) // Testing endpoint to see the registered users
+app.route('/diff').get(showDiff) // Testing endpoint to see the registered users
 
 
 app.listen(3000)
