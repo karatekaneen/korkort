@@ -1,5 +1,5 @@
 const express = require('express');
-const { idLookUp } = require('./dataRetrieval')
+const { idLookUp, getQueue } = require('./dataRetrieval')
 const { applyResult, acceptedLicense, rejectedLicense } = require('./acceptanceHandler')
 /* 
 Någon slags funktion som hämtar personid på personen som står i kö med sin ansökan för att 
@@ -15,7 +15,14 @@ exports.fetchAdmin = async (req, res, next) => {
    try {
       if (res.locals.auth.isAdmin) {
          // Fetching old and new data to get approval
-         res.send({ success: true, response: await idLookUp() });
+
+         res.send({
+            success: true,
+            response: {
+               ...await idLookUp(),
+               inQueue: await getQueue()
+            }
+         })
       } else {
          console.error(err)
          const rejection = reject('unauthorized')
