@@ -1,5 +1,4 @@
 const express = require('express');
-const app = express();
 const { idLookUp } = require('./dataRetrieval')
 const { applyResult, acceptedLicense, rejectedLicense } = require('./acceptanceHandler')
 /* 

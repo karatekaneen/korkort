@@ -9,18 +9,8 @@ exports.showUsers = (req, res) => {
    }))
 }
 exports.showDiff = (req, res) => {
-   const p = require('../data/Personer.json')
-   const a = require('../data/Ansokningar.json')
-
-   pId = p.map(m => {
-      return m.Korkortsnummer
-   })
-
-   aId = a.map(m => {
-      return m.Korkortsnummer
-   })
 
 
 
-   res.send(aId.filter(f => { return !pId.includes(f) }))
+   res.send(__dirname)
 }

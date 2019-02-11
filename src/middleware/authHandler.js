@@ -45,7 +45,6 @@ exports.handleLogin = async (req, res, next) => {
          'auth',
          token,
          {
-            httpOnly: true,
             maxAge: 3600000 // One hour expiry
          }
       )
