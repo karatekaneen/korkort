@@ -80,7 +80,7 @@ exports.postApplication = async (req, res, next) => {
          }
 
          // Parse the image data:
-         cleanData = parseImageData(cleanData) // TODO This should be passed req.files to add the path to application object
+         cleanData = parseImageData({ formData: cleanData, fileData: req.files }) // TODO This should be passed req.files to add the path to application object
 
          // Upload to database
          const resp = await uploadApplication(cleanData)
