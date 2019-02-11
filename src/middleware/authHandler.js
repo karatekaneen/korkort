@@ -5,7 +5,6 @@ const { reject } = require('../handlers/rejector')
 
 exports.checkAuth = async (req, res, next) => {
    // Funktion för att kolla så att allting står rätt till med inloggning
-   console.log(req.cookies)
    try {
 
       // Checking if the token is signed with the correct key
@@ -16,6 +15,7 @@ exports.checkAuth = async (req, res, next) => {
 
       // If the token was valid we save the user id locally:
       res.locals.auth = decoded
+      console.log({ decoded })
 
       next()
 

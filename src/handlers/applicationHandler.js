@@ -49,6 +49,8 @@ exports.postApplication = async (req, res, next) => {
    })
    console.log('Received:')
    console.log(JSON.stringify(req.body, null, 3))
+   console.log(JSON.stringify(req.files, null, 3))
+
 
 
 
@@ -64,7 +66,7 @@ exports.postApplication = async (req, res, next) => {
    }
    try {
       // Check if the person is allowed to make an application. If not, reject it with 403.
-      if (await conditionsFulfilled({ id: 12345 })) { //{ id: res.locals.auth.userId })) {
+      if (await conditionsFulfilled({ id: res.locals.auth.userId })) {
 
          // Sanitize user input to minimize risk of injection attacks:
          let cleanData = sanitize(formData)

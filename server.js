@@ -22,7 +22,7 @@ const { upload } = require('./src/middleware/formParser')
 
 
 app.route('/application').get(checkAuth, getApplication) // TODO Fixa specifik användare
-app.route('/application').post(upload, postApplication)
+app.route('/application').post(checkAuth, upload, postApplication)
 
 app.route('/admin').get(checkAuth, fetchAdmin)
 app.route('/admin').post(checkAuth, postAdmin)
