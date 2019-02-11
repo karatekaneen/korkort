@@ -14,8 +14,20 @@ exports.showUsers = (req, res) => {
    }))
 }
 exports.showDiff = (req, res) => {
+   const data = require('../data/Personer.json')
+   const dateArr = data
+      .map(date => {
+         return date.Fodelsedatum.split(' ')
+      }).map(date => {
+         date[0] = date[0].split('-')
+         date[1] = date[1].split(':')
+
+         const outputString = date[0].join('') + ' ' + date[1][1] + date[1][2]
+         return outputString
+      })
 
 
 
-   res.send(__dirname)
+
+   res.send(dateArr[0])
 }

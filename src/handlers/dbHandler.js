@@ -27,7 +27,7 @@ exports.fetchUser = (userId) => {
    */
    const data = require('../data/Personer.json')
 
-   return userData = data.find(user => {
+   return data.find(user => {
       return user.Korkortsnummer == userId
    })
 

@@ -40,8 +40,6 @@ exports.handleLogin = async (req, res, next) => {
       // Generate token with userId
       var token = jwt.sign({ userId }, SECRET);
 
-      // Add cookie to save session:
-
       // Return token + user data
       res.header('Auth', token).send({ success: true, response: userData })
    } else {
@@ -67,7 +65,6 @@ exports.handleAdminLogin = async (req, res, next) => {
             SECRET
          )
 
-         console.log({ token })
          // Return token + user data
          res.header('Auth', token).send({ success: true, response: {} })
       } else {
