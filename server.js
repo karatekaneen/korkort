@@ -3,11 +3,15 @@ const cors = require('cors')
 const bodyParser = require('body-parser')
 const cookieParser = require('cookie-parser')
 
+const corsOptions = {
+   exposedHeaders: 'Auth'
+}
+
 let app = express()
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(cookieParser())
-app.use(cors())
+app.use(cors(corsOptions))
 
 const { checkAuth, handleLogin } = require('./src/middleware/authHandler')
 const { postApplication, getApplication } = require('./src/handlers/applicationHandler')

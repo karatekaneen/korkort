@@ -41,16 +41,9 @@ exports.handleLogin = async (req, res, next) => {
       var token = jwt.sign({ userId }, SECRET);
 
       // Add cookie to save session:
-      res.cookie(
-         'auth',
-         token,
-         {
-            maxAge: 3600000 // One hour expiry
-         }
-      )
 
       // Return token + user data
-      res.send({ success: true, response: userData })
+      res.header('Auth', token).send({ success: true, response: userData })
    } else {
       res.send({ success: false, response: 'No user data found' })
    }
