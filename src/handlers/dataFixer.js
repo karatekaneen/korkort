@@ -25,9 +25,11 @@ exports.dataIsComplete = (formData) => {
    return true
 }
 
-exports.parseImageData = (formData) => {
+exports.parseImageData = (input) => {
+    const {formData, fileData} = input
+    formData.Portratt = fileData.userPhoto[0].path
+    formData.Signatur = fileData.userSignature[0].path
    let clone = JSON.parse(JSON.stringify(formData))
-
    console.log('fix the imageparser')
 
    return clone
