@@ -13,7 +13,7 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(cookieParser())
 app.use(cors(corsOptions))
 
-const { checkAuth, handleLogin } = require('./src/middleware/authHandler')
+const { checkAuth, handleLogin, handleAdminLogin } = require('./src/middleware/authHandler')
 const { postApplication, getApplication } = require('./src/handlers/applicationHandler')
 const { test, showUsers, showDiff } = require('./src/handlers/tester')
 const { fetchAdmin, postAdmin } = require('./src/handlers/adminHandler')
@@ -28,6 +28,7 @@ app.route('/admin').get(checkAuth, fetchAdmin)
 app.route('/admin').post(checkAuth, postAdmin)
 
 app.route('/login').post(handleLogin)
+app.route('/adminlogin').post(handleAdminLogin)
 
 
 

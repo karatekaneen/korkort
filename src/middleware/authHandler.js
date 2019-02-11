@@ -10,7 +10,7 @@ exports.checkAuth = async (req, res, next) => {
 
       // Checking if the token is signed with the correct key
       const decoded = jwt.verify(
-         req.cookies.auth,
+         req.headers.auth,
          SECRET
       )
 
@@ -46,5 +46,34 @@ exports.handleLogin = async (req, res, next) => {
       res.header('Auth', token).send({ success: true, response: userData })
    } else {
       res.send({ success: false, response: 'No user data found' })
+   }
+}
+
+
+exports.handleAdminLogin = async (req, res, next) => {
+
+   // Check if details provided
+   const { username, password } = req.body
+
+
+   if (username && password) {
+      if (username === 'admin' && password === 'admin') {
+
+         // Generate token with userId
+         const token = jwt.sign(
+            {
+               isAdmin: true
+            },
+            SECRET
+         )
+
+         console.log({ token })
+         // Return token + user data
+         res.header('Auth', token).send({ success: true, response: {} })
+      } else {
+         res.send({ success: false, response: 'Login failed' })
+      }
+   } else {
+      res.send({ success: false, response: 'No credentials given' })
    }
 }

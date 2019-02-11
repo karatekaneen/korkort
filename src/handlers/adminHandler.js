@@ -13,8 +13,18 @@ ANNARS släng den skiten
 
 exports.fetchAdmin = async (req, res, next) => {
    try {
-      // Fetching old and new data to get approval
-      res.send({ success: true, response: await idLookUp() });
+      if (res.locals.auth.isAdmin) {
+         // Fetching old and new data to get approval
+         res.send({ success: true, response: await idLookUp() });
+      } else {
+         console.error(err)
+         const rejection = reject('unauthorized')
+         res.status(rejection.status).send({
+            success: false,
+            response: rejection.message
+         })
+
+      }
    } catch (err) {
       console.error(err)
       const rejection = reject('unknown')
@@ -27,22 +37,32 @@ exports.fetchAdmin = async (req, res, next) => {
 
 exports.postAdmin = async (req, res, next) => {
    try {
+      if (res.locals.auth.isAdmin) {
+         const adminDecision = { applicationStatus: 'Godkänd' } //req.body.adminDecision
 
-      const adminDecision = { applicationStatus: 'Godkänd' } //req.body.adminDecision
+         // Kollar om admin har accepterat det nya körkortet(true) eller nekat(false)
+         const applicationResult = applyResult(adminDecision);
 
-      // Kollar om admin har accepterat det nya körkortet(true) eller nekat(false)
-      const applicationResult = applyResult(adminDecision);
+         // Funktionen ska kolla om ansökan är godkänd eller ej. (Denna funktion kanske funkar så?) Innehållet är copy paste från applicationHandler.js
+         if (!applicationResult.approved) {
+            const resp = await rejectedLicense(applicationResult)
+            res.send({ success: true, response: resp })
+         } else if (applicationResult.approved) {
 
-      // Funktionen ska kolla om ansökan är godkänd eller ej. (Denna funktion kanske funkar så?) Innehållet är copy paste från applicationHandler.js
-      if (!applicationResult.approved) {
-         const resp = await rejectedLicense(applicationResult)
-         res.send({ success: true, response: resp })
-      } else if (applicationResult.approved) {
+            //Ladda upp det nya körkortet i databasen || Ersätta den gamla data?
+            const resp = await acceptedLicense(applicationResult)
+            res.send({ success: true, response: resp })
+         }
 
-         //Ladda upp det nya körkortet i databasen || Ersätta den gamla data?
-         const resp = await acceptedLicense(applicationResult)
-         res.send({ success: true, response: resp })
+      } else {
+         console.error(err)
+         const rejection = reject('unauthorized')
+         res.status(rejection.status).send({
+            success: false,
+            response: rejection.message
+         })
       }
+
 
    } catch (err) {
       console.error(err)
