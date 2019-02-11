@@ -1,5 +1,13 @@
 // Hämta personID från en ansökan för att hitta gamla data från personen för jämföran
 // Skapa en lista på ansökan och ta första ID i kön?
+const applications = require('../data/Ansokningar.json')
+const licenses = require('../data/Personer.json')
+
+exports.getQueue = async () => {
+   // Get the number of applications in queue: 
+   return applications.filter(application => { return application.Status < 1 }).length
+}
+
 exports.idLookUp = async () => {
    console.log('Search the database for person ID')
 
@@ -20,41 +28,12 @@ exports.idLookUp = async () => {
 
 // Hämta den gamla data som finns i databasen med personID och returnera data
 retrieveOldData = async (personId) => {
-   console.log('Retrieve old userdata from the database')
-
-   // Tillfällig data
-   const oldUserData = { // Req input
-      name: 'Varg Vikernes',
-      birthDate: 197011124692,
-      image: 'aske59vmsiegnosf0232gdfaf3fafggdsxxcz',
-      signature: 'mgla015713bnvmn8fah0feaiofjea0n'
-   }
-   return oldUserData
+   // Fetching the existing drivers' license: 
+   return licenses.find(license => { return license.Korkortsnummer === personId })
 }
 
-// Hämta den nya data som finns i databasen med personID och returnera data
+// Hämta den första ansökningen i kön:
 retrieveNewData = async () => {
-   console.log('Retrieve new userdata from the database')
-   const applications = [ // TODO Fix mock data for this one
-      {
-         Korkortsnummer: 123456,
-         status: 0,
-         Bild: '',
-         Signatur: ''
-      },
-      {
-         Korkortsnummer: 234567,
-         status: 1,
-         Bild: '',
-         Signatur: ''
-      },
-      {
-         Korkortsnummer: 345678,
-         status: 0,
-         Bild: '',
-         Signatur: ''
-      }
-   ]
    // Basically mocking: 'SELECT * FROM ansokan WHERE status = 0 LIMIT 1'
-   return firstApplication = applications.find(application => { return application.status === 0 })
+   return applications.find(application => { return application.Status === 0 })
 }
