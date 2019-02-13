@@ -50,5 +50,6 @@ exports.parseImageData = (input) => {
          console.log(err)
       }
    }
+   console.log({ clone })
    return clone
 }
