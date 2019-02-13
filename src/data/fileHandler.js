@@ -19,9 +19,10 @@ const writeFile = async (fileName, newFile) => {
    }
 }
 
-const deleteFile = async (fileName) => {
+exports.deleteFile = async (fileName) => {
    try {
-      await fs.deleteFile(`${__dirname}/${fileName}.json`, 'utf8')
+      fs.unlink(fileName)
+
    } catch (err) {
       console.log(err)
    }
