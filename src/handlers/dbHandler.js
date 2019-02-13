@@ -1,4 +1,4 @@
-const { updatePerson } = require('../data/fileHandler')
+const { createApplication } = require('../data/fileHandler')
 
 exports.uploadApplication = async (formData) => {
    /*
@@ -10,13 +10,10 @@ exports.uploadApplication = async (formData) => {
          with the new data from the application and set new expiry date 10 years from now.
       - Return confirmation of that the process was a success
    */
-   const testForm = {
-      Korkortsnummer: 67621,
-      woop: 'POOOP'
-   }
+   const objToSave = { ...formData, Status: 0 }
    return {
       success: true,
-      response: await updatePerson(testForm)
+      response: await createApplication(objToSave)
    }
 }
 

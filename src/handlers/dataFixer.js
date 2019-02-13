@@ -27,25 +27,15 @@ exports.dataIsComplete = (formData) => {
 
 exports.parseImageData = (input) => {
    const base64Img = require('base64-img');
-   const fs = require('mz/fs');
 
 
    let { formData, fileData } = input
    let clone = JSON.parse(JSON.stringify(formData))
-   if (clone.hasOwnProperty('userSignature') && clone.hasOwnProperty('userPhoto')) {
+   if (fileData.userPhoto.length > 0 && fileData.userSignature.length > 0) {
       try {
          clone.Portratt = base64Img.base64Sync(fileData.userPhoto[0].path)
          clone.Signatur = base64Img.base64Sync(fileData.userSignature[0].path)
 
-         fs.unlink(fileData.userPhoto[0].path, (err) => {
-            if (err) throw err
-            console.log('userPhoto deleted')
-         })
-
-         fs.unlink(fileData.userSignature[0].path, (err) => {
-            if (err) throw err
-            console.log('FuserSignatureile deleted')
-         })
       } catch (err) {
          console.log(err)
       }
