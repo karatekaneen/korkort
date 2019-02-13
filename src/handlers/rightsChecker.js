@@ -13,7 +13,7 @@ exports.conditionsFulfilled = (input) => {
 
    // Checks that person DOES NOT already have application pending:
    const applicationIndex = applications.filter(application => {
-      return (application.Korkortsnummer == input.id && (application.Status > 0))
+      return (application.Korkortsnummer == input.id && (application.Status == 0))
    })
    const canApply = (applicationIndex.length === 0)
    const conditionFulfilled = (canApply && hasLicense)

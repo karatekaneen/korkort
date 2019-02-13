@@ -28,9 +28,10 @@ exports.dataIsComplete = (formData) => {
 exports.parseImageData = (input) => {
    let { formData, fileData } = input
    let clone = JSON.parse(JSON.stringify(formData))
-
-   clone.Portratt = fileData.userPhoto[0].path
-   clone.Signatur = fileData.userSignature[0].path
+   if (clone.hasOwnProperty('userSignature') && clone.hasOwnProperty('userPhoto')) {
+      clone.Portratt = fileData.userPhoto[0].path
+      clone.Signatur = fileData.userSignature[0].path
+   }
 
    return clone
 }
