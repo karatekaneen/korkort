@@ -45,19 +45,15 @@ exports.fetchAdmin = async (req, res, next) => {
 exports.postAdmin = async (req, res, next) => {
    try {
       if (res.locals.auth.isAdmin) {
-         const adminDecision = { applicationStatus: 'Godkänd' } //req.body.adminDecision
 
-         // Kollar om admin har accepterat det nya körkortet(true) eller nekat(false)
-         const applicationResult = applyResult(adminDecision);
+         const { adminDecision, application } = req.body
 
-         // Funktionen ska kolla om ansökan är godkänd eller ej. (Denna funktion kanske funkar så?) Innehållet är copy paste från applicationHandler.js
-         if (!applicationResult.approved) {
-            const resp = await rejectedLicense(applicationResult)
+         // If the application is granted, update drivers' license:
+         if (adminDecision == 2) {
+            const resp = await acceptedLicense(application)
             res.send({ success: true, response: resp })
-         } else if (applicationResult.approved) {
-
-            //Ladda upp det nya körkortet i databasen || Ersätta den gamla data?
-            const resp = await acceptedLicense(applicationResult)
+         } else {
+            const resp = await rejectedLicense(application)
             res.send({ success: true, response: resp })
          }
 
@@ -69,7 +65,6 @@ exports.postAdmin = async (req, res, next) => {
             response: rejection.message
          })
       }
-
 
    } catch (err) {
       console.error(err)

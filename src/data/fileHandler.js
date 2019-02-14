@@ -50,7 +50,7 @@ exports.updateApplication = async (application) => {
    try {
       const list = await getFile('Ansokningar')
       const updatedList = list.map(oldApplication => {
-         if (oldApplication.Ansokan_ID === application.Ansokan_ID) {
+         if (oldApplication.Korkortsnummer == application.Korkortsnummer && oldApplication.Status == 0) {
             oldApplication = { ...oldApplication, ...application }
          }
          return oldApplication
