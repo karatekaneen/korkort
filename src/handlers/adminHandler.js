@@ -1,4 +1,3 @@
-const express = require('express');
 const { idLookUp, getQueue } = require('./dataRetrieval')
 const { applyResult, acceptedLicense, rejectedLicense } = require('./acceptanceHandler')
 /* 
@@ -45,6 +44,7 @@ exports.fetchAdmin = async (req, res, next) => {
 exports.postAdmin = async (req, res, next) => {
    try {
       if (res.locals.auth.isAdmin) {
+         console.log({ input: req.body })
 
          const { adminDecision, application } = req.body
 
@@ -53,7 +53,7 @@ exports.postAdmin = async (req, res, next) => {
             const resp = await acceptedLicense(application)
             res.send({ success: true, response: resp })
          } else {
-            const resp = await rejectedLicense(application)
+            const resp = await rejectedLicense(application, adminDecision)
             res.send({ success: true, response: resp })
          }
 
