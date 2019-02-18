@@ -1,14 +1,11 @@
-const licenses = require('../data/Personer.json')
-const { updateApplication, updatePerson } = require('../data/fileHandler')
-const { fetchUser } = require('../handlers/dbHandler')
-
+const licenseController = require('../data/license.controller')
+const applicationController = require('../data/application.controller')
 
 
 exports.acceptedLicense = async (application) => {
-   console.log({ accepted: application })
    try {
       // Fetch the existing license:
-      const existingLicense = await fetchUser(application.Korkortsnummer)
+      const existingLicense = await licenseController.read({ Korkortsnummer: application.Korkortsnummer })
 
       // merge the existing objects:
       let updatedLicense = { ...existingLicense, ...application }
@@ -23,12 +20,12 @@ exports.acceptedLicense = async (application) => {
       delete updatedLicense.Ansokan_ID
 
       // Update the person's license: 
-      const personResp = await updatePerson(updatedLicense)
+      const personResp = await licenseController.update(updatedLicense)
 
       // Update the application object:
       let updatedApplication = application
       updatedApplication.Status = 2
-      const applicationResp = await updateApplication(updatedApplication)
+      const applicationResp = await applicationController.update(updatedApplication)
 
       return {
          success: true,
@@ -41,10 +38,9 @@ exports.acceptedLicense = async (application) => {
 }
 
 exports.rejectedLicense = async (application, adminDecision) => {
-   console.log({ rejected: application })
    let updatedApplication = application
    updatedApplication.Status = adminDecision
-   const applicationResp = await updateApplication(updatedApplication)
+   const applicationResp = await applicationController.update(updatedApplication)
    return {
       success: true,
       response: 'Ansökan nekad'

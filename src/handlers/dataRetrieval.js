@@ -1,15 +1,15 @@
 // Hämta personID från en ansökan för att hitta gamla data från personen för jämföran
 // Skapa en lista på ansökan och ta första ID i kön?
-const applications = require('../data/Ansokningar.json')
-const licenses = require('../data/Personer.json')
+const applicationController = require('../data/application.controller')
+const licenseController = require('../data/license.controller')
 
 exports.getQueue = async () => {
    // Get the number of applications in queue: 
-   return applications.filter(application => { return application.Status < 1 }).length
+   const queue = await applicationController.readAll()
+   return queue.length
 }
 
 exports.idLookUp = async () => {
-   console.log('Search the database for person ID')
 
    // Check for next application in queue
    const newUserData = await retrieveNewData()
@@ -29,11 +29,11 @@ exports.idLookUp = async () => {
 // Hämta den gamla data som finns i databasen med personID och returnera data
 retrieveOldData = async (personId) => {
    // Fetching the existing drivers' license: 
-   return licenses.find(license => { return license.Korkortsnummer == personId })
+   return await licenseController.read({ Korkortsnummer: personId })
 }
 
 // Hämta den första ansökningen i kön:
 retrieveNewData = async () => {
    // Basically mocking: 'SELECT * FROM ansokan WHERE status = 0 LIMIT 1'
-   return applications.find(application => { return application.Status == 0 })
+   return await applicationController.getNext()
 }

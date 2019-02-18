@@ -44,7 +44,6 @@ exports.fetchAdmin = async (req, res, next) => {
 exports.postAdmin = async (req, res, next) => {
    try {
       if (res.locals.auth.isAdmin) {
-         console.log({ input: req.body })
 
          const { adminDecision, application } = req.body
 

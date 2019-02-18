@@ -15,7 +15,6 @@ exports.checkAuth = async (req, res, next) => {
 
       // If the token was valid we save the user id locally:
       res.locals.auth = decoded
-      console.log({ decoded })
 
       next()
 

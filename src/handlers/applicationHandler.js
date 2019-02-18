@@ -3,6 +3,7 @@ const { reject } = require('./rejector')
 const { conditionsFulfilled } = require('./rightsChecker')
 const { uploadApplication } = require('./dbHandler')
 const { fetchUser } = require('./dbHandler')
+const { cleanUpFiles } = require('./fileHandler')
 
 
 
@@ -12,7 +13,7 @@ exports.getApplication = async (req, res, next) => {
    */
    try {
       // Fetch the old application data and return it:
-      const applicationData = fetchUser(res.locals.auth.userId)
+      const applicationData = await fetchUser(res.locals.auth.userId)
       res.send({ success: true, response: applicationData })
    } catch (err) {
       console.log(err)
@@ -36,20 +37,6 @@ exports.postApplication = async (req, res, next) => {
    - Notify the user of errors or that the process was a success
    */
 
-   console.log('Needed:')
-   console.log({
-      Namn: 'Kalle',
-      Efternamn: 'Anka',
-      Korkortsnummer: 19890203 - 1234,
-      Ansokan_ID: 54,
-      Email: 'Kalle@ankeborg.com',
-      Status: 0,
-      Portratt: '*BILD*',
-      Signatur: '*BILD*'
-   })
-   console.log('Received:')
-   console.log(JSON.stringify(req.body, null, 3))
-   console.log(JSON.stringify(req.files, null, 3))
    let formData = req.body
    delete formData.cookie
 
@@ -76,7 +63,9 @@ exports.postApplication = async (req, res, next) => {
          cleanData = await parseImageData({ formData: cleanData, fileData: req.files })
 
          // Upload to database
-         const resp = await uploadApplication(cleanData)
+         const resp = await uploadApplication(cleanData, res.locals.auth.userId)
+
+         cleanUpFiles(req.files)
 
          res.send(resp)
 

@@ -20,7 +20,6 @@ exports.dataIsComplete = (formData) => {
    /*
    Method to check if the sanitized formdata is fulfilling the requirements
    */
-   console.log('do not forget to fix dataIsComplete')
 
    return true
 }
@@ -40,6 +39,5 @@ exports.parseImageData = (input) => {
          console.log(err)
       }
    }
-   console.log({ clone })
    return clone
 }
