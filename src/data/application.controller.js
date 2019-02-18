@@ -33,13 +33,13 @@ exports.getNext = async () => {
 
 exports.update = async (inApplication) => {
    // Called with updated application. Find the old one by the ID and updates it:
-   Application.findOne({ id: inApplication._id }, (err, application) => {
-      application = inApplication
-
-      application.save((err) => {
-         if (err) return next(err)
-      })
+   console.log({ inApplication })
+   Application.findOneAndUpdate({ _id: inApplication.id }, inApplication, (err) => {
+      if (err) {
+         throw err
+      }
    })
+
 }
 
 exports.delete = async (id) => {

@@ -5,3 +5,8 @@ exports.createLicense = async (req, res, next) => {
    const resp = await licenseController.create(req.body)
    res.send(resp)
 }
+
+
+const d = new Date()
+
+console.log(d.toGMTString())

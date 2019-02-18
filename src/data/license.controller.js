@@ -33,13 +33,12 @@ exports.read = async (filter) => {
 
 exports.update = async (newLicense) => {
    // Called with a new license that's granted, finds the old license and updates it. Find the old one by the ID and updates it:
-   License.findOne({ Korkortsnummer: newLicense.Korkortsnummer }, (err, license) => {
-      license = { ...license, ...newLicense }
-
-      license.save((err) => {
-         if (err) return next(err)
-      })
+   License.findOneAndUpdate({ _id: newLicense._id }, newLicense, (err) => {
+      if (err) {
+         throw err
+      }
    })
+
 }
 
 exports.delete = async (id) => {

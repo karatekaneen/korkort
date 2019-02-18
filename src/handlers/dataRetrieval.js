@@ -29,11 +29,12 @@ exports.idLookUp = async () => {
 // Hämta den gamla data som finns i databasen med personID och returnera data
 retrieveOldData = async (personId) => {
    // Fetching the existing drivers' license: 
-   return await licenseController.read({ Korkortsnummer: personId })
+   const oldData = await licenseController.read({ Korkortsnummer: personId })
+   return oldData[0]
 }
 
 // Hämta den första ansökningen i kön:
 retrieveNewData = async () => {
    // Basically mocking: 'SELECT * FROM ansokan WHERE status = 0 LIMIT 1'
-   return (await applicationController.getNext())[0]
+   return await applicationController.getNext()
 }

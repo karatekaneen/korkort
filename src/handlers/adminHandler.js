@@ -14,13 +14,14 @@ exports.fetchAdmin = async (req, res, next) => {
    try {
       if (res.locals.auth.isAdmin) {
          // Fetching old and new data to get approval
+         const output = {
+            ...await idLookUp(),
+            inQueue: await getQueue()
+         }
 
          res.send({
             success: true,
-            response: {
-               ...await idLookUp(),
-               inQueue: await getQueue()
-            }
+            response: output
          })
       } else {
          console.error(err)
