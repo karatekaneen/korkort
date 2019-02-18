@@ -29,7 +29,7 @@ exports.idLookUp = async () => {
 // Hämta den gamla data som finns i databasen med personID och returnera data
 retrieveOldData = async (personId) => {
    // Fetching the existing drivers' license: 
-   return await licenseController.read({ Korkortsnummer: personId })
+   return (await licenseController.read({ Korkortsnummer: personId }))[0]
 }
 
 // Hämta den första ansökningen i kön:
