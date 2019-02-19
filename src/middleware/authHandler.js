@@ -33,7 +33,8 @@ exports.handleLogin = async (req, res, next) => {
 
 
    // Fetch user
-   const userData = fetchUser(userId)
+   const userData = await fetchUser(userId)
+
 
    if (userData) {
       // Generate token with userId
@@ -63,6 +64,8 @@ exports.handleAdminLogin = async (req, res, next) => {
             },
             SECRET
          )
+
+         console.log(token)
 
          // Return token + user data
          res.header('Auth', token).send({ success: true, response: {} })
